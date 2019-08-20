@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
@@ -19,6 +20,14 @@ class Category
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string",length=128,unique=true)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $slug;
 
     /**
      * @var string
@@ -151,5 +160,19 @@ class Category
         $this->affiliates->removeElement($affiliate);
 
         return $this;
+    }
+     /**
+     * @return string|null
+     */
+    public function getSlug() : ?string
+    {
+        return $this->slug;
+    }
+     /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug) : void
+    {
+        $this->slug=$slug;
     }
 }
