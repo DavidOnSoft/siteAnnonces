@@ -161,7 +161,7 @@ class Category
 
         return $this;
     }
-     /**
+     /*
      * @return string|null
      */
     public function getSlug() : ?string
