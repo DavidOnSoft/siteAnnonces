@@ -33,16 +33,11 @@ class JobController extends Controller
         $form -> handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var UploadedFile|null $logoFile */
             $logoFile = $form->get('logo')->getData();
 
             if ($logoFile instanceof UploadedFile) {
-                $fileName = \bin2hex(\random_bytes(10)) . '.' . $logoFile->guessExtension();
-                $logoFile->move(
-                    $this->getParameter('jobs_directory'),
-                    $fileName
-                );
+                $fileName = $fileUploader->upload($logoFile);
 
                 $job->setLogo($fileName);
             }
