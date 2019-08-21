@@ -11,21 +11,6 @@ use Doctrine\ORM\AbstractQuery;
 class JobRepository extends EntityRepository
 {
     /**
-     * @param Category $category
-     * 
-     * @return AbstractQuery
-     */
-    public function getPaginatedActiveJobsByCategory(Category $category):AbstractQuery
-    {
-        return $this->createQueryBuilder('j')
-                ->where('j.category= :category')
-                ->andWhere('j.expiresAt> :date')
-                ->setParameter('category',$category)
-                ->setParameter('date',new \DateTime())
-                ->getQuery();
-    }
-
-    /**
      * @param int|null $categoryId
      *
      * @return Job[]
@@ -61,5 +46,20 @@ class JobRepository extends EntityRepository
             ->setParameter('date', new \DateTime())
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return AbstractQuery
+     */
+    public function getPaginatedActiveJobsByCategoryQuery(Category $category) : AbstractQuery
+    {
+        return $this->createQueryBuilder('j')
+            ->where('j.category = :category')
+            ->andWhere('j.expiresAt > :date')
+            ->setParameter('category', $category)
+            ->setParameter('date', new \DateTime())
+            ->getQuery();
     }
 }
