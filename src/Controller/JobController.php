@@ -46,7 +46,10 @@ class JobController extends Controller
             $em->persist($job);
             $em->flush();
 
-            return $this->redirectToRoute('job.list');
+            return $this->redirectToRoute(
+                'job.preview',
+                ['token' => $job->getToken()]
+            );
         }
         return $this->render('job/create.html.twig',[
             'form'=>$form->createView()
@@ -68,10 +71,10 @@ class JobController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-            // return $this->redirectToRoute(
-            //     'job.preview',
-            //     ['token' => $job->getToken()]
-            // );
+            return $this->redirectToRoute(
+                'job.preview',
+                ['token' => $job->getToken()]
+            );
         }
         return $this->render('job/edit.html.twig', [
             'form' => $form->createView(),
@@ -109,6 +112,21 @@ class JobController extends Controller
     {
         return $this->render('job/show.html.twig', [
             'job' => $job,
+        ]);
+    }
+    /**
+     *
+     * @Route("job/{token}", name="job.preview", methods="GET", requirements={"token" = "\w+"})
+     *
+     * @param Job $job
+     *
+     * @return Response
+     */
+    public function preview(Job $job) : Response
+    {
+        return $this->render('job/show.html.twig', [
+            'job' => $job,
+            'hasControlAccess'=>true
         ]);
     }
 }
