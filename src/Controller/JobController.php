@@ -112,7 +112,7 @@ class JobController extends AbstractController
     public function preview(Job $job) : Response
     {
         $deleteForm = $this->createDeleteForm($job);
-        $publishForm = $this->createPublishForm($job);
+        
         return $this->render('job/show.html.twig', [
             'job' => $job,
             'hasControlAccess' => true,

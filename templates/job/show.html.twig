@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    
-        {% include 'job/control_panel.html.twig' with {
-            'job': job,
-            'deleteForm': deleteForm
-        } only %}
+        {% if deleteForm is defined %}
+            {% include 'job/control_panel.html.twig' with {
+                'job': job,
+                'deleteForm': deleteForm
+            } only %}
+            {% else %}
+                Pas trouvé de formulaire.
+        {% endif %}
+        
  
 
     <h1>annonces</h1>
