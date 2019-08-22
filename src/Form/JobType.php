@@ -37,6 +37,7 @@ class JobType extends AbstractType{
                 ]
             ])
             ->add('logo', FileType::class,[
+                'data_class' => null,
                 'required'=>false,
                 'constraints'=>[
                     new Image()
@@ -102,13 +103,13 @@ class JobType extends AbstractType{
                 'constraints' => [
                     new NotBlank(),
                 ]
-            ])
-            ->add('token', TextType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['max' => 255]),
-                ]
             ]);
+            // ->add('token', TextType::class, [
+            //     'constraints' => [
+            //         new NotBlank(),
+            //         new Length(['max' => 255]),
+            //     ]
+            // ]);
     }
     public function configureOptions(OptionsResolver $resolver){
         $resolver->setDefaults([

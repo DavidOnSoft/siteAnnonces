@@ -34,7 +34,43 @@ class JobUploadListener
         $this->uploadFile($entity);
         $this->fileToString($entity);
     }
+
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function postLoad(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        $this->stringToFile($entity);
+    }
     
+    /**
+     * @param $entity
+     */
+    public function stringToFile($entity)
+    {
+        if (!$entity instanceof Job){
+            return;
+        }
+        if ($fileName=$entity->getLogo()){
+            $entity->setLogo(new File($this->uploader->getTargetDirectory().'/'.$fileName));
+        }
+    }
+    /**
+     * @param $entity
+     */
+    public function fileToString($entity)
+    {
+        if (!$entity instanceof Job){
+            return;
+        }
+        $logoFile=$entity->getLogo();
+        if ($logoFile instanceof File){
+            $entity->setLogo($logoFile->getFilename());
+        }
+    }
+
+
     /**
      * @param $entity
      */

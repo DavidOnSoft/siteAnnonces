@@ -27,7 +27,8 @@ class JobController extends Controller
      * 
      * @return RedirectResponse|Response
      */
-    public function create(Request $request,EntityManagerInterface $em,FileUploader $fileUploader):Response{
+    public function create(Request $request,EntityManagerInterface $em,FileUploader $fileUploader):Response
+    {
         $job=new Job();
         $form=$this->createForm(JobType::class,$job);
         $form -> handleRequest($request);
@@ -51,6 +52,32 @@ class JobController extends Controller
             'form'=>$form->createView()
         ]);
     }
+    /**
+     *
+     * @Route("/job/{token}/edit", name="job.edit", methods={"GET", "POST"}, requirements={"token" = "\w+"})
+     *
+     * @param Request $request
+     * @param Job $job
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function edit(Request $request, Job $job, EntityManagerInterface $em) : Response
+    {
+        $form = $this->createForm(JobType::class, $job);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            // return $this->redirectToRoute(
+            //     'job.preview',
+            //     ['token' => $job->getToken()]
+            // );
+        }
+        return $this->render('job/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     /**
      *
      * @Route("/", name="job.list", methods="GET")
